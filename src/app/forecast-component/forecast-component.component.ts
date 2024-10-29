@@ -1,5 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { IWeatherResponse } from '../interfaces/IWeatherResponse';
+import { ForecastApiService } from '../forecast-api-service.service';
+import { ICON_PATH } from '../constants/iconNamePathDictionary';
+import { BACKGROUND_PATH } from '../constants/backgroundNamePathDictionary';
 
 @Component({
   selector: 'app-forecast-component',
@@ -9,28 +13,28 @@ import { Component } from '@angular/core';
   styleUrl: './forecast-component.component.less'
 })
 export class ForecastComponentComponent {
-  constructor(private _http: HttpClient) {
+  constructor(private _forecastDataService: ForecastApiService) {
     this.responseAdress = '';
   }
 
   responseAdress: string;
+  weatherData: IWeatherResponse | undefined;
+  iconPathDict = ICON_PATH;
+  backgroundPathDict = BACKGROUND_PATH;
 
   public makeRequest() {
-    this._http.get<IWeatherResponse>('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Vinnytsia/2024-09-18/2024-09-25', {
-      params: new HttpParams()
-        .set('unitGroup', 'metric')
-        .set('include', 'days')
-        .set('key', '5NCNZB7M4J2ZRZ6HDCZ5M8HCG')
-        .set('contentType', 'json')
-    })
-    .subscribe(data => {
-      this.responseAdress = data.timezone;
-    });
+    this._forecastDataService.getDays(6)
+      .subscribe(data => {
+
+        let dataWithDates = data.days.map(x => {
+          const date = new Date(x.datetime);
+          const options: Intl.DateTimeFormatOptions = { weekday: 'long' }; 
+          x.dayName = date.toLocaleDateString('uk-UA', options);
+          return x;
+        });
+        data.days = dataWithDates;
+
+        this.weatherData = data;
+      });
   }
-}
-
-
-interface IWeatherResponse {
-  address: string
-  timezone: string
 }
