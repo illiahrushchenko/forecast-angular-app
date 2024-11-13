@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IWeatherResponse } from './interfaces/IWeatherResponse';
+import { API_KEY } from './constants/secrets';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class ForecastApiService {
           params: new HttpParams()
             .set('unitGroup', 'metric')
             .set('include', 'days')
-            .set('key', '{key}')
+            .set('key', API_KEY)
             .set('contentType', 'json')
         });
   }
