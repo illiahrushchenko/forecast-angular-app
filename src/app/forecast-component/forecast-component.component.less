@@ -18,9 +18,9 @@ html {
 }
 
 .container {
-    width: 80%;
+    width: 60%;
     margin: 20px auto 20px;
-    padding: 20px;
+    padding: 35px;
     //background-imagurl('');
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 35px;
@@ -54,9 +54,37 @@ html {
     display: flex;
 }
 
+.big-icon img{
+    height: 100%;
+}
+
+.big-icon {
+    height: 90%;
+    text-align: center;
+}
+
 .main-temp {
-    font-size: 4em;
+    font-size: 7em;
     margin-top: 10px;
+}
+
+#second-temp {
+    font-size: 1.7em;
+    margin-top: 10px;
+}
+
+#day-name {
+    font-size: 4.5em;
+    margin-top: 10px;
+}
+
+.flex-block-center {
+    //display: flex;
+    justify-content: center;
+}
+
+.flex-block-center div {
+    text-align: center;
 }
 
 .details {
@@ -65,6 +93,20 @@ html {
 
 .details p {
     margin: 5px 0;
+}
+
+.details-item {
+    display: flex;
+}
+
+.details-item-key {
+    flex: 2;
+    text-align: left;
+}
+
+.details-item-value {
+    flex: 1;
+    text-align: center;
 }
 
 .days {

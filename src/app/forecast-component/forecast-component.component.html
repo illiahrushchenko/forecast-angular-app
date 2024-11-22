@@ -8,34 +8,61 @@
                 </div>
                 <div style="margin-left: 5px;">{{ weatherData?.resolvedAddress }}</div>
             </div>
-            <div class="main-temp" id="main-temp">{{ (weatherData?.days?.[0]?.temp) + '°C' }}</div>
+            <div class="flex-block-center">
+                <div class="second-temp" id="day-name">{{weatherData?.days?.[dayIndexState]?.dayName}}</div>
+                <div class="main-temp" id="main-temp">{{ (weatherData?.days?.[dayIndexState]?.temp) + '°C' }}</div>
+                <div class="second-temp" id="second-temp">Макс: {{ (weatherData?.days?.[dayIndexState]?.tempmax)}}°C, Мін: {{ (weatherData?.days?.[dayIndexState]?.tempmin)}}°C</div>
+            </div>
             <div class="details" id="details">
-                <p>Макс: {{ (weatherData?.days?.[0]?.tempmax)}}°C, Мін: {{ (weatherData?.days?.[0]?.tempmin)}}°C</p>
-                <p>Відчувається як: {{weatherData?.days?.[0]?.feelslike}}°C</p>
-                <p>Тиск: {{weatherData?.days?.[0]?.pressure}} мм</p>
-                <p>Вологість: {{weatherData?.days?.[0]?.humidity}}%</p>
-                <p>Вітер: {{weatherData?.days?.[0]?.windspeed}} м/с</p>
-                <p>Ймовірність опадів: {{weatherData?.days?.[0]?.precipcover}}%</p>
+                <div class="details-item">
+                    <p class="details-item-key">Відчувається як:</p>
+                    <p class="details-item-value">{{weatherData?.days?.[dayIndexState]?.feelslike}}°C</p>
+                </div>
+                <div class="details-item">
+                    <p class="details-item-key">Тиск:</p>
+                    <p class="details-item-value">{{weatherData?.days?.[dayIndexState]?.pressure}}</p>
+                </div>
+                <div class="details-item">
+                    <p class="details-item-key">Вологість:</p>
+                    <p class="details-item-value">{{weatherData?.days?.[dayIndexState]?.humidity}}%</p>
+                </div>
+                <div class="details-item">
+                    <p class="details-item-key">Вітер:</p>
+                    <p class="details-item-value">{{weatherData?.days?.[dayIndexState]?.windspeed}} м/с</p>
+                </div>
+                <div class="details-item">
+                    <p class="details-item-key">Ймовірність опадів:</p>
+                    <p class="details-item-value">{{weatherData?.days?.[dayIndexState]?.precipcover}}%</p>
+                </div>
             </div>
         </div>
-        <div class="box header flex-container" style="text-align: right;">
-            <div class="box"></div>
-            <div class="box">
-                {{ weatherData?.days?.[0]?.datetime }}
+        <div class="box" style="text-align: right;">
+            <div class="flex-container box" style="font-size: 2em;">
+                <div class="box"></div>
+                <div class="box">
+                    {{ weatherData?.days?.[dayIndexState]?.datetime }}
+                </div>
+            </div>
+            <div class="big-icon">
+                <img [src]="bigIcons[weatherData?.days?.[dayIndexState]?.icon ?? '']" alt="big-icon">
             </div>
         </div>
     </div>
     <div class="container">
-        @for (day of weatherData?.days; track day.datetime) {
+        <!-- @for (day of weatherData?.days; track day.datetime) {
         <div class="day box">
+            <img [src]="iconPathDict[day.icon]" [alt]="day.icon">
+            <p class="day-text" style="font-weight: bold;">{{ day.dayName }}</p>
+            <p class="day-text">{{ day.temp }}°C</p>
+        </div>
+        }  -->
+
+        <div *ngFor="let day of weatherData?.days; let i = index; trackBy: trackDay" class="day box" [ngClass]="{'active': i === dayIndexState}" (click)="changeDayIndexState(i)">
             <img [src]="iconPathDict[day.icon]" [alt]="day.icon">
             <p class="day-text" style="font-weight: bold;">{{ day.dayName }}</p>
             <!-- <p style="font-weight: bold;">{{ day.parsedDate }}</p> -->
             <p class="day-text">{{ day.temp }}°C</p>
-        </div>
 
-        } @empty {
-        Empty list of days
-        }
+        </div>
     </div>
 </div>

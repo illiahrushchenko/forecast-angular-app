@@ -1,21 +1,27 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common'; 
 import { Component } from '@angular/core';
 import { IWeatherResponse } from '../interfaces/IWeatherResponse';
 import { ForecastApiService } from '../forecast-api-service.service';
 import { ICON_PATH } from '../constants/iconNamePathDictionary';
 import { BACKGROUND_PATH } from '../constants/backgroundNamePathDictionary';
+import { BIG_ICONS } from '../constants/bigIconNamePathDictionary';
 
 @Component({
   selector: 'app-forecast-component',
   standalone: true,
-  imports: [],
+  imports: [NgClass, CommonModule],
   templateUrl: './forecast-component.component.html',
   styleUrl: './forecast-component.component.less'
 })
 export class ForecastComponentComponent {
   constructor(private _forecastDataService: ForecastApiService) {
     this.responseAdress = '';
+    this.dayIndexState = 0;
   }
+
+  dayIndexState: number;
 
   audio: HTMLAudioElement | undefined;
 
@@ -23,6 +29,7 @@ export class ForecastComponentComponent {
   weatherData: IWeatherResponse | undefined;
   iconPathDict = ICON_PATH;
   backgroundPathDict = BACKGROUND_PATH;
+  bigIcons = BIG_ICONS;
 
   public makeRequest() {
     if(!this.audio)
@@ -48,5 +55,13 @@ export class ForecastComponentComponent {
         this.weatherData = data;
       });
       //TODO: unsubscribe in destructor
+  }
+
+  public trackDay(index: number, day: any): string {
+    return day.datetime; 
+  }
+
+  public changeDayIndexState(index: number){
+    this.dayIndexState = index;
   }
 }
