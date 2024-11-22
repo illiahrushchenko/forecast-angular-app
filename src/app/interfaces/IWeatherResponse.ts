@@ -8,6 +8,7 @@ export interface IWeatherResponse {
 export interface IWeatherResponseDay {
     datetime: string
     dayName: string
+    parsedDate: string
 
     tempmax: number
     tempmin: number

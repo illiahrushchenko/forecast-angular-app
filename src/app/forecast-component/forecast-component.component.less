@@ -12,19 +12,46 @@ html {
     padding: 0;
 }
 
+.day-text{
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
 .container {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto 20px;
     padding: 20px;
     //background-imagurl('');
     background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 15px;
-    text-align: center;
+    border-radius: 35px;
     color: white;
+    display: flex;
+}
+
+.search-button{
+    flex: 1;
+    //border: 1px solid #ccc;
+}
+
+.icon img {
+    width: 1em;  /* Задає ширину іконки 2em */
+    height: 1em; /* Задає висоту іконки 2em */
+    margin-right: 8px; /* Відступ між іконкою та текстом */
+  }
+
+.box {
+    flex: 10;
+    //border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.flex-container{
+    display: flex;
 }
 
 .header {
     font-size: 2em;
+    display: flex;
 }
 
 .main-temp {
@@ -50,6 +77,7 @@ html {
     cursor: pointer;
     padding: 10px;
     border-radius: 10px;
+    text-align: center;
 }
 
 .day img {
