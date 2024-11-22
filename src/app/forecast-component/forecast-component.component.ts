@@ -17,24 +17,36 @@ export class ForecastComponentComponent {
     this.responseAdress = '';
   }
 
+  audio: HTMLAudioElement | undefined;
+
   responseAdress: string;
   weatherData: IWeatherResponse | undefined;
   iconPathDict = ICON_PATH;
   backgroundPathDict = BACKGROUND_PATH;
 
   public makeRequest() {
+    if(!this.audio)
+      this.audio = new Audio('assets/audio/DZIDZIO – Вихідний.mp3');
+
+    this.audio.play();
+
+
     this._forecastDataService.getDays(6)
       .subscribe(data => {
 
-        let dataWithDates = data.days.map(x => {
+        let processedDaysData = data.days.map(x => {
           const date = new Date(x.datetime);
           const options: Intl.DateTimeFormatOptions = { weekday: 'long' }; 
           x.dayName = date.toLocaleDateString('uk-UA', options);
+
+          x.parsedDate = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' });
+
           return x;
         });
-        data.days = dataWithDates;
+        data.days = processedDaysData;
 
         this.weatherData = data;
       });
+      //TODO: unsubscribe in destructor
   }
 }
