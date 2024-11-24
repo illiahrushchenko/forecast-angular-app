@@ -7,11 +7,12 @@ import { ForecastApiService } from '../forecast-api-service.service';
 import { ICON_PATH } from '../constants/iconNamePathDictionary';
 import { BACKGROUND_PATH } from '../constants/backgroundNamePathDictionary';
 import { BIG_ICONS } from '../constants/bigIconNamePathDictionary';
+import { CitySelectComponent } from "../city-select/city-select.component";
 
 @Component({
   selector: 'app-forecast-component',
   standalone: true,
-  imports: [NgClass, CommonModule],
+  imports: [NgClass, CommonModule, CitySelectComponent],
   templateUrl: './forecast-component.component.html',
   styleUrl: './forecast-component.component.less'
 })
@@ -27,9 +28,26 @@ export class ForecastComponentComponent {
 
   responseAdress: string;
   weatherData: IWeatherResponse | undefined;
+
   iconPathDict = ICON_PATH;
   backgroundPathDict = BACKGROUND_PATH;
   bigIcons = BIG_ICONS;
+
+  isModalOpen = false;
+  selectedCity = '';
+
+  openCityModal(): void {
+    this.isModalOpen = true;
+  }
+
+  handleModalClose(): void {
+    this.isModalOpen = false;
+  }
+
+  handleCitySelection(city: string): void {
+    this.selectedCity = city;
+    this.makeRequest();
+  }
 
   public makeRequest() {
     if(!this.audio)
@@ -38,7 +56,7 @@ export class ForecastComponentComponent {
     this.audio.play();
 
 
-    this._forecastDataService.getDays(6)
+    this._forecastDataService.getDays(6, this.selectedCity)
       .subscribe(data => {
 
         let processedDaysData = data.days.map(x => {

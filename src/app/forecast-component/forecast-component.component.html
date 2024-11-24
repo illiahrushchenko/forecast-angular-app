@@ -1,15 +1,20 @@
 <!-- <div class="background-image" style="background-image: url(assets/backgrounds/sunny.jpg);"> -->
 <!-- <div class="background-image" style="background-image: url( {{backgroundPathDict[weatherData?.days?.[dayIndexState]?.icon ]}} );"> -->
 <div 
-class="background-image" 
-[style.background-image]="
+    class="background-image" 
+    [style.background-image]="
     'url(' + (backgroundPathDict[weatherData?.days?.[dayIndexState]?.icon ?? '']) + ')'
 ">
-    <button (click)="makeRequest()">Make request</button>
+    <app-city-select
+    [isOpen]="isModalOpen"
+    (closeModal)="handleModalClose()"
+    (citySelected)="handleCitySelection($event)"
+    ></app-city-select>
+    <!-- <button (click)="makeRequest()">Make request</button> -->
     <div class="container">
         <div class="box" style="text-align: left;">
             <div class="header flex-container">
-                <div class="icon">
+                <div class="icon" (click)="openCityModal()">
                     <img src="assets/icons/search-2903 (1).svg" alt="">
                 </div>
                 <div style="margin-left: 5px;">{{ weatherData?.resolvedAddress }}</div>

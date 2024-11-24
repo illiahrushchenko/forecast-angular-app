@@ -1,0 +1,16 @@
+<div *ngIf="isOpen" class="modal">
+    <div class="modal-content">
+        <div class="header">
+            <h2>Оберіть місто:</h2>
+            <h2 class="close" (click)="onCloseModal()">&times;</h2>
+        </div>
+        <ul class="city-list">
+            <li *ngFor="let city of cities" (click)="onSelectCity(city)" class="city-item">{{ city }}</li>
+            <li class="city-item add-city-item">
+                <input [(ngModel)]="newCity" type="text" placeholder="Add a city..." (keydown.enter)="addCity()"
+                    class="add-city-input" />
+                <button (click)="addCity()" class="add-city-button">+</button>
+            </li>
+        </ul>
+    </div>
+</div>
