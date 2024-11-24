@@ -8,6 +8,7 @@ import { ICON_PATH } from '../constants/iconNamePathDictionary';
 import { BACKGROUND_PATH } from '../constants/backgroundNamePathDictionary';
 import { BIG_ICONS } from '../constants/bigIconNamePathDictionary';
 import { CitySelectComponent } from "../city-select/city-select.component";
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-forecast-component',
@@ -21,6 +22,8 @@ export class ForecastComponentComponent {
     this.responseAdress = '';
     this.dayIndexState = 0;
   }
+
+  private destroy$ = new Subject<void>();
 
   dayIndexState: number;
 
@@ -57,6 +60,7 @@ export class ForecastComponentComponent {
 
 
     this._forecastDataService.getDays(6, this.selectedCity)
+      .pipe(takeUntil(this.destroy$))
       .subscribe(data => {
 
         let processedDaysData = data.days.map(x => {
@@ -72,7 +76,11 @@ export class ForecastComponentComponent {
 
         this.weatherData = data;
       });
-      //TODO: unsubscribe in destructor
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public trackDay(index: number, day: any): string {
