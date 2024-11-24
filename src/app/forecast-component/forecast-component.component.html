@@ -1,4 +1,10 @@
-<div class="background-image" style="background-image: url(assets/backgrounds/sunny.jpg);">
+<!-- <div class="background-image" style="background-image: url(assets/backgrounds/sunny.jpg);"> -->
+<!-- <div class="background-image" style="background-image: url( {{backgroundPathDict[weatherData?.days?.[dayIndexState]?.icon ]}} );"> -->
+<div 
+class="background-image" 
+[style.background-image]="
+    'url(' + (backgroundPathDict[weatherData?.days?.[dayIndexState]?.icon ?? '']) + ')'
+">
     <button (click)="makeRequest()">Make request</button>
     <div class="container">
         <div class="box" style="text-align: left;">
