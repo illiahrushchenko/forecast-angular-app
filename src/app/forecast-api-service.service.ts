@@ -12,14 +12,14 @@ export class ForecastApiService {
   constructor(
     private _http: HttpClient) { }
 
-  getDays(days: number): Observable<IWeatherResponse> {
+  getDays(days: number, city: string): Observable<IWeatherResponse> {
       let startDate = new Date();
       let endDate = new Date();
       endDate.setDate(startDate.getDate() + days);
 
       let startDateString = this.parseDate(startDate);
       let endDateString = this.parseDate(endDate);
-      return this.getData(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Vinnytsia/${startDateString}/${endDateString}`);
+      return this.getData(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/${startDateString}/${endDateString}`);
   }
 
   parseDate(date: Date): string {
