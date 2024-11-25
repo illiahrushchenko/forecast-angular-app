@@ -49,6 +49,8 @@ export class ForecastComponentComponent {
   ngOnInit(): void {
     //this.audio = new Audio();
     this.setupAudio();
+    this.selectedCity = 'Вінниця';
+    this.makeRequest();
   }
 
   setupAudio() {
