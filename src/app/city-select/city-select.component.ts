@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ForecastApiService } from '../forecast-api-service.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-city-select',
@@ -24,7 +25,9 @@ export class CitySelectComponent {
 
   cities = ['Вінниця'];
   selectedCity: string = '';
-  newCity = '';
+  newCity: string = '';
+
+  private destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     // Load cities from localStorage or use a default list
@@ -44,7 +47,9 @@ export class CitySelectComponent {
   addCity(): void {
     // Check if the city name is not empty and not already in the list
     if (this.newCity.trim() && !this.cities.includes(this.newCity.trim())) {
-      this._forecastDataService.getDays(0, this.newCity.trim()).subscribe({
+      this._forecastDataService.getDays(0, this.newCity.trim())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
         next: (data) => {
           this.cities.push(this.newCity.trim());
           this.newCity = '';
@@ -61,5 +66,10 @@ export class CitySelectComponent {
 
   private saveCitiesToStorage(): void {
     localStorage.setItem(this.storageKey, JSON.stringify(this.cities));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

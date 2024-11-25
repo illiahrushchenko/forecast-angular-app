@@ -10,7 +10,7 @@
     (closeModal)="handleModalClose()"
     (citySelected)="handleCitySelection($event)"
     ></app-city-select>
-    <!-- <button (click)="makeRequest()">Make request</button> -->
+
     <div class="container">
         <div class="box" style="text-align: left;">
             <div class="header flex-container">
@@ -60,18 +60,9 @@
         </div>
     </div>
     <div class="container">
-        <!-- @for (day of weatherData?.days; track day.datetime) {
-        <div class="day box">
-            <img [src]="iconPathDict[day.icon]" [alt]="day.icon">
-            <p class="day-text" style="font-weight: bold;">{{ day.dayName }}</p>
-            <p class="day-text">{{ day.temp }}°C</p>
-        </div>
-        }  -->
-
         <div *ngFor="let day of weatherData?.days; let i = index; trackBy: trackDay" class="day box" [ngClass]="{'active': i === dayIndexState}" (click)="changeDayIndexState(i)">
             <img [src]="iconPathDict[day.icon]" [alt]="day.icon">
             <p class="day-text" style="font-weight: bold;">{{ day.dayName }}</p>
-            <!-- <p style="font-weight: bold;">{{ day.parsedDate }}</p> -->
             <p class="day-text">{{ day.temp }}°C</p>
 
         </div>
